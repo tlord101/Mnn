@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Tickets | Ticketmaster</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/event.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .tickets-page { padding: 20px 16px; }
+    .tickets-page h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .tickets-page .subtitle { color: #646464; margin-bottom: 24px; font-size: 0.95rem; }
+    .ticket-tier {
+      border: 1px solid #e0e0e0;
+      padding: 18px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .ticket-tier:active { background: #f5f5f5; }
+    .ticket-tier h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .ticket-tier .price { font-size: 1.15rem; font-weight: 700; color: #024ddf; }
+    .ticket-tier .meta { font-size: 0.85rem; color: #646464; }
+    .qty-row { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+    .qty-btn {
+      width: 40px; height: 40px;
+      border: 1px solid #999;
+      font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .qty-value { font-size: 1.1rem; font-weight: 600; min-width: 28px; text-align: center; }
+    .checkout-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-top: 1px solid #e0e0e0;
+      padding: 14px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+    }
+    .checkout-bar .total { font-size: 1.1rem; font-weight: 700; }
+    .checkout-bar .btn-buy {
+      background: #024ddf; color: #fff;
+      font-weight: 600; padding: 14px 28px; font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header event-header">
+    <div class="header-top">
+      <a href="event.html" class="back-btn" aria-label="Back">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+      <a href="index.html" class="logo"><span class="logo-text">ticketmaster<span class="registered">®</span></span></a>
+      <div style="width:32px"></div>
+    </div>
+  </header>
+
+  <main class="tickets-page">
+    <h1>Long Beach Symphony POPS</h1>
+    <p class="subtitle">Sat • Oct 24 • 7:30 PM<br>Long Beach Arena</p>
+
+    <h2 style="font-size:1rem;font-weight:800;margin-bottom:14px;">SELECT TICKETS</h2>
+
+    <div class="ticket-tier" data-price="89">
+      <div>
+        <h3>Standard</h3>
+        <span class="meta">Section A • Row 12+</span>
+      </div>
+      <span class="price">$89</span>
+    </div>
+    <div class="ticket-tier" data-price="149">
+      <div>
+        <h3>Premium</h3>
+        <span class="meta">Section B • Row 5-10</span>
+      </div>
+      <span class="price">$149</span>
+    </div>
+    <div class="ticket-tier" data-price="249">
+      <div>
+        <h3>VIP Package</h3>
+        <span class="meta">Front rows + lounge access</span>
+      </div>
+      <span class="price">$249</span>
+    </div>
+
+    <div class="qty-row">
+      <span style="font-weight:600">Quantity</span>
+      <button class="qty-btn" id="qtyMinus">−</button>
+      <span class="qty-value" id="qtyValue">2</span>
+      <button class="qty-btn" id="qtyPlus">+</button>
+    </div>
+  </main>
+
+  <div class="checkout-bar">
+    <div>
+      <div class="total" id="totalPrice">$178</div>
+      <div style="font-size:0.8rem;color:#646464">All-in pricing</div>
+    </div>
+    <button class="btn-buy" id="buyBtn">Continue</button>
+  </div>
+
+  <script>
+    let qty = 2;
+    let unitPrice = 89;
+    const qtyEl = document.getElementById('qtyValue');
+    const totalEl = document.getElementById('totalPrice');
+    document.getElementById('qtyMinus').onclick = () => { if (qty > 1) { qty--; update(); } };
+    document.getElementById('qtyPlus').onclick = () => { qty++; update(); };
+    document.querySelectorAll('.ticket-tier').forEach(t => {
+      t.onclick = () => {
+        document.querySelectorAll('.ticket-tier').forEach(x => x.style.borderColor = '#e0e0e0');
+        t.style.borderColor = '#024ddf';
+        unitPrice = +t.dataset.price;
+        update();
+      };
+    });
+    document.querySelector('.ticket-tier').style.borderColor = '#024ddf';
+    function update() {
+      qtyEl.textContent = qty;
+      totalEl.textContent = '$' + (qty * unitPrice);
+    }
+    document.getElementById('buyBtn').onclick = () => {
+      alert('Checkout flow coming next (connect to Supabase for real orders).\\n\\nTotal: $' + (qty * unitPrice));
+    };
+  </script>
+</body>
+</html>
